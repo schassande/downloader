@@ -1,0 +1,95 @@
+<div>
+    <h2>DW Transferts</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6 no-padding-left btn-group">
+                <button class="btn btn-success" ui-sref="d-w-transfert.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>Create new DW Transfert</span>
+                </button>
+                <button class="btn btn-danger" ui-sref="d-w-transfert.deleteDone" >
+                    <span class="glyphicon glyphicon-minus"></span>
+                    <span>Delete all Done DW Transfert</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+<!--                     <th class="text-center"><span>ID</span></th> -->
+                    <th class="text-center"><span>Status</span></th>
+                    <th class="text-center"><span>Rank</span></th>
+                    <th class="text-center"><span>Percent</span></th>
+                    <th class="text-center"><span>Source Account</span></th>
+                    <th class="text-center"><span>Source Path</span></th>
+                    <th class="text-center"><span>Target Account</span></th>
+                    <th class="text-center"><span>Target Path</span></th>
+                    <th class="text-center"><span>Scheduling</span></th>
+<!--                     <th class="text-center"><span>Day Begin</span></th> -->
+<!--                     <th class="text-center"><span>Day End</span></th> -->
+<!--                     <th class="text-center"><span>Start</span></th> -->
+<!--                     <th class="text-center"><span>End</span></th> -->
+                    <th class="text-center"><span>NbError</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dWTransfert in vm.dWTransferts track by dWTransfert.id" class="{{ vm.getClassFromStatus(dWTransfert.status)}}">
+<!--                     <td><a ui-sref="d-w-transfert-detail({id:dWTransfert.id})">{{dWTransfert.id}}</a></td> -->
+                    <td class="text-center">{{dWTransfert.status}}</td>
+                    <td class="text-center">{{dWTransfert.rank}}</td>
+                    <td class="text-center">{{vm.getPercent()dWTransfert)}}</td>
+                    <td><a ui-sref="dw-host-account-detail({id:dWTransfert.source.id})">{{dWTransfert.source.account.host}}</a></td>
+                    <td>{{vm.getFileName(dWTransfert.source.path)}}</td>
+                    <td><a ui-sref="dw-host-account-detail({id:dWTransfert.target.id})">{{dWTransfert.target.account.host}}</a></td>
+                    <td>{{dWTransfert.target.path}}</td>
+                    <td class="text-center">
+                            <button type="submit" ng-click="vm.run(dWTransfert.id)"
+                                    class="btn btn-danger btn-md" ng-if="dWTransfert.scheduling == 'IMMEDIATLY'">
+		                    	<span class="animate-if glyphicon glyphicon-arrow-down"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit" ng-click="vm.run(dWTransfert.id)"
+                                    class="btn btn-success btn-md" ng-if="dWTransfert.scheduling == 'EVERY_DAY_WINDOW'">
+		                    	<span class="animate-if glyphicon glyphicon-time"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                    </td>
+<!--                     <td>{{vm.formatSeconds(dWTransfert.dayBegin)}}</td> -->
+<!--                     <td>{{vm.formatSeconds(dWTransfert.dayEnd)}}</td> -->
+<!--                     <td>{{dWTransfert.start | date:'medium'}}</td> -->
+<!--                     <td>{{dWTransfert.end | date:'medium'}}</td> -->
+                    <td class="text-center">{{dWTransfert.nbError}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="d-w-transfert-detail({id:dWTransfert.id})"
+                                    class="btn btn-info btn-md">
+                                <span class="glyphicon glyphicon-search"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="d-w-transfert.edit({id:dWTransfert.id})"
+                                    class="btn btn-success btn-md">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+<!--                         </div> -->
+<!--                         <div class="btn-group flex-btn-group-container"> -->
+                            <button type="submit"
+                                    ui-sref="d-w-transfert.delete({id:dWTransfert.id})"
+                                    class="btn btn-danger btn-md">
+                                <span class="glyphicon glyphicon-remove-sign"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

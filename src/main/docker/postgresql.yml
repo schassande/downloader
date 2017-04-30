@@ -1,0 +1,12 @@
+version: '2'
+services:
+    downloader-postgresql:
+        container_name: downloader-postgresql
+        image: postgres:9.5.3
+        # volumes:
+        #     - ~/volumes/jhipster/downloader/postgresql/:/var/lib/postgresql/
+        environment:
+            - POSTGRES_USER=downloader
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432

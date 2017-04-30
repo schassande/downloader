@@ -1,0 +1,30 @@
+
+entity DWTransfert {
+	dwtransfetId Long,
+	bandwithLimit Integer,
+	start  ZonedDateTime 
+}
+entity DWHostAccount {
+	dwHostaccountId String,
+    host String,
+    port String,
+    userName String,
+    password String,
+	protocol DWProtocol
+}
+enum DWProtocol {
+    SSH, DIRECT, FTP
+}
+entity DWFileInfo {
+	fileInfoId Long,
+	path String
+}
+relationship ManyToOne {
+	DWFileInfo{account} to DWHostAccount
+}
+relationship ManyToOne {
+	DWTransfert{source} to DWFileInfo
+}
+relationship ManyToOne {
+	DWTransfert{target} to DWFileInfo
+}

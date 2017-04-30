@@ -1,0 +1,31 @@
+
+<div>
+    <h2><span>DW File Info</span> {{vm.dWFileInfo.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>File Info Id</span></dt>
+        <dd>
+            <span>{{vm.dWFileInfo.fileInfoId}}</span>
+        </dd>
+        <dt><span>Path</span></dt>
+        <dd>
+            <span>{{vm.dWFileInfo.path}}</span>
+        </dd>
+        <dt><span>Account</span></dt>
+        <dd>
+            <a ui-sref="dw-host-account-detail({id:vm.dWFileInfo.account.id})">{{vm.dWFileInfo.account.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="d-w-file-info-detail.edit({id:vm.dWFileInfo.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>

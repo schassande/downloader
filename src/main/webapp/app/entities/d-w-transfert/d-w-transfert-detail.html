@@ -1,0 +1,57 @@
+
+<div>
+    <h2><span>DW Transfert</span> {{vm.dWTransfert.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Status</span></dt>
+        <dd><span class="btn btn-{{vm.getClassFromStatus(vm.dWTransfert.status)}}">{{vm.dWTransfert.status}}</span></dd>
+        <dt><span>Rank</span></dt>
+        <dd><span>{{vm.dWTransfert.rank}}</span></dd>
+        
+        <dt><span>Source</span></dt>
+        <dd><a ui-sref="dw-host-account-detail({id:vm.dWTransfert.source.id})">{{vm.dWTransfert.source.account.id}}-{{vm.dWTransfert.source.account.protocol}}: {{vm.dWTransfert.source.account.host}}</a></dd>
+        <dt><span>Source Path</span></dt>
+        <dd><span>{{vm.dWTransfert.source.path}}</span></dd>
+        
+        <dt><span>Target</span></dt>
+        <dd><a ui-sref="dw-host-account-detail({id:vm.dWTransfert.target.id})">{{vm.dWTransfert.target.account.id}}-{{vm.dWTransfert.target.account.protocol}}: {{vm.dWTransfert.target.account.host}}</a></dd>
+        <dt><span>Target Path</span></dt>
+        <dd><span>{{vm.dWTransfert.target.path}}</span></dd>
+
+        <dt><span>Scheduling</span></dt>
+        <dd>
+        	<span>                            
+				<button type="submit" class="btn btn-danger btn-md" ng-if="vm.dWTransfert.scheduling == 'IMMEDIATLY'">
+					<span class="animate-if glyphicon glyphicon-arrow-down"></span>
+					<span class="hidden-xs hidden-sm"></span>
+				</button>
+				<button type="submit" class="btn btn-success btn-md" ng-if="vm.dWTransfert.scheduling == 'EVERY_DAY_WINDOW'">
+					<span class="animate-if glyphicon glyphicon-time"></span>
+					<span class="hidden-xs hidden-sm"></span>
+				</button>
+			</span>
+			<span>{{vm.dWTransfert.scheduling}}</span>
+		</dd>
+        <dt><span>Day Begin</span></dt>
+        <dd><span>{{vm.formatSeconds(vm.dWTransfert.dayBegin)}}</span></dd>
+        <dt><span>Day End</span></dt>
+        <dd><span>{{vm.formatSeconds(vm.dWTransfert.dayEnd)}}</span></dd>
+        
+        <dt><span>Start</span></dt>
+        <dd><span>{{vm.dWTransfert.start | date:'medium'}}</span></dd>
+        <dt><span>End</span></dt>
+        <dd><span>{{vm.dWTransfert.end | date:'medium'}}</span></dd>
+        <dt><span>Errors</span></dt>
+        <dd><span><span ng-if="!vm.dWTransfert.nbError">-</span><span ng-if="vm.dWTransfert.nbError">{{vm.dWTransfert.nbError}} error(s): <br>{{vm.dWTransfert.errorMessages}}</span></span></dd>
+    </dl>
+
+    <button type="submit" ui-sref="{{ vm.previousState }}" class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="d-w-transfert-detail.edit({id:vm.dWTransfert.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,21 @@
+<div ng-cloak>
+    <div class="row">
+        <div class="col-md-4">
+            <span class="hipster img-responsive img-rounded"></span>
+        </div>
+        <div class="col-md-8">
+            <h1>Welcome to Downloader application!</h1>
+			<p>This application permits you to launch download/upload from/to remote servers via FTP or SSH connections. Transferts can be scheduled over a time windows every day.</p>
+            <div ng-switch="vm.isAuthenticated()">
+                <div class="alert alert-success" ng-switch-when="true">
+                    <p>You are logged in as user "{{vm.account.login}}".</p>
+                    <p>The first time you use the application you have to define Host Account for each remote server. Then you can add transferts.</p>
+                </div>
+
+                <div class="alert alert-warning" ng-switch-when="false">
+                    You don't have an account yet? <a class="alert-link" ui-sref="register">Register a new account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

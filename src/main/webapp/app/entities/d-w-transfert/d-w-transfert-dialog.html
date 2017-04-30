@@ -1,0 +1,232 @@
+
+<form name="editForm" role="form" novalidate>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myDWTransfertLabel">Create or edit a DW Transfert</h4>
+    </div>
+    <div class="modal-body form-horizontal" style="{}">
+        <jhi-alert-error></jhi-alert-error>
+        
+        <ul class="nav nav-tabs">
+		  <li class="active"><a data-toggle="tab" href="#source">Source</a></li>
+		  <li><a data-toggle="tab" href="#target">Target</a></li>
+		  <li><a data-toggle="tab" href="#scheduling">Scheduling</a></li>
+		  <li><a data-toggle="tab" href="#executionDetails">Execution details</a></li>
+		</ul>
+
+		<div class="tab-content" style="min-height: 250px;">
+			
+			
+	        <div id="source" class="tab-pane fade in active">
+				<div class="col-md-12"> 
+			       <form ng-submit="vm.onBrowseSource()">
+				        <div class="form-group">
+				            <label  class="control-label" for="field_source">Source account</label>
+				            <select class="form-control" id="field_source" name="source" 
+				            	ng-model="vm.dWTransfert.source.account" 
+				            	ng-options="dwHostAccount as dwHostAccount.host for dwHostAccount in vm.dwHostAccounts track by dwHostAccount.id"
+				            	ng-change="vm.selectSourceAccount()"  tabindex="0" ng-readonly="!vm.transfert.id">
+				                <option value=""></option>
+				            </select>
+				        </div>
+				        <div class="form-group">
+				            <label class="control-label" for="field_source_path">Source path</label>
+				            <input type="text" class="form-control" name="source_path" id="field_source_path" tabindex="1" 
+				            ng-model="vm.dWTransfert.source.path"  ng-readonly="!vm.transfert.id"/>
+				        </div>
+					    <div ng-if="!vm.transfert.id">
+						    <button type="submit" class="btn btn-info" ng-click="vm.onBrowseSource()">
+						        <span class="glyphicon glyphicon-search"></span>&nbsp;<span> Browse</span>
+						    </button>
+						    <button class="btn btn-info" ng-click="vm.manageSourceConnection()">
+						        <span class="glyphicon glyphicon-link"></span>&nbsp;
+						        <span ng-if="!vm.source.connected"> Connect</span>
+						        <span ng-if="vm.source.connected" > Disconnect</span>
+						    </button>
+					    </div>
+			        </form>
+				    <table class="jh-table table table-striped" ng-table="vm.source.files" show-filter="false" ng-if="vm.transfert.id == null && vm.source.files"><tbody>
+						<tr>
+							<th></th>
+							<th class="text-center">
+				               	<a ng-click="vm.source.sortType = 'filename'; vm.source.sortReverse = !vm.source.sortReverse">Name 
+				        			<span ng-show="vm.source.sortType == 'filename' && !vm.source.sortReverse" class="fa fa-caret-down"></span>
+				        			<span ng-show="vm.source.sortType == 'filename' && vm.source.sortReverse" class="fa fa-caret-up"></span>
+				      			</a>
+				            </th>
+							<th class="text-center">
+				               	<a ng-click="vm.source.sortType = 'size'; vm.source.sortReverse = !vm.source.sortReverse">Size
+				        			<span ng-show="vm.source.sortType == 'size' && !vm.source.sortReverse" class="fa fa-caret-down"></span>
+				        			<span ng-show="vm.source.sortType == 'size' && vm.source.sortReverse" class="fa fa-caret-up"></span>
+				      			</a>
+							</th>
+				            <th class="text-center">
+				               	<a ng-click="vm.source.sortType = 'fileTime'; vm.source.sortReverse = !vm.source.sortReverse">Last modified 
+				        			<span ng-show="vm.source.sortType == 'fileTime' && !vm.source.sortReverse" class="fa fa-caret-down"></span>
+				        			<span ng-show="vm.source.sortType == 'fileTime' && vm.source.sortReverse" class="fa fa-caret-up"></span>
+				      			</a>
+							</th>
+						</tr>
+				        <tr ng-repeat="file in vm.source.files | orderBy:vm.source.sortType:vm.source.sortReverse">
+				        	<td class="text-center"><input type="checkbox" ng-model="file.selected" ng-change="vm.selectSourceFile(file)"/></td>
+				            <td sortable="'filename'">
+				            		<a ng-click="vm.selectSourceDirectory(file)" ng-if="file.dir">{{ file.filename }}</a>
+				            		<span ng-if="!file.dir">{{ file.filename }}</span>
+				            </td>
+				            <td class="text-right" sortable="'size'"><span ng-if="!file.dir">{{ vm.toOctets(file.size) }}</span></td>
+				            <td class="text-center" sortable="'fileTime'">{{ file.fileTime | date:'yyyy-MM-dd HH:mm' }}</td>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+
+
+	        <div id="target" class="tab-pane fade">
+				<div class="col-md-12"> 
+			       <form ng-submit="vm.onBrowseTarget()">
+				        <div class="form-group">
+				            <label  class="control-label" for="field_target">Target account</label>
+				            <select class="form-control" id="field_target" name="target" 
+				            	ng-model="vm.dWTransfert.target.account" 
+				            	ng-options="dwHostAccount as dwHostAccount.host for dwHostAccount in vm.dwHostAccounts track by dwHostAccount.id"
+				            	ng-change="vm.selectTargetAccount()"
+				            	tabindex="2">
+				                <option value=""></option>
+				            </select>
+				        </div>
+				        <div class="form-group">
+				            <label class="control-label" for="field_target_path">Target path</label>
+				            <input type="text" class="form-control" name="target_path" id="field_target_path" tabindex="3" ng-model="vm.dWTransfert.target.path"/>
+				        </div>
+					    <div>
+						    <button type="submit" class="btn btn-info" ng-click="vm.onBrowseTarget()">
+						        <span class="glyphicon glyphicon-search"></span>&nbsp;<span> Browse</span>
+						    </button>
+						    <button class="btn btn-info" ng-click="vm.manageTargetConnection()">
+						        <span class="glyphicon glyphicon-link"></span>&nbsp;
+						        <span ng-if="!vm.target.connected"> Connect</span>
+						        <span ng-if="vm.target.connected"> Disconnect</span>
+						    </button>
+					    </div>
+				    </form>
+				    <table class="jh-table table table-striped" ng-table="vm.target.files" show-filter="false"><tbody>
+						<tr>
+							<th class="text-center">
+				               	<a ng-click="vm.target.sortType = 'filename'; vm.target.sortReverse = !vm.target.sortReverse">Name 
+				        			<span ng-show="vm.target.sortType == 'filename' && !vm.target.sortReverse" class="fa fa-caret-down"></span>
+				        			<span ng-show="vm.target.sortType == 'filename' && vm.target.sortReverse" class="fa fa-caret-up"></span>
+				      			</a>
+				            </th>
+							<th class="text-center">
+				               	<a ng-click="vm.target.sortType = 'size'; vm.target.sortReverse = !vm.target.sortReverse">Size
+				        			<span ng-show="vm.target.sortType == 'size' && !vm.target.sortReverse" class="fa fa-caret-down"></span>
+				        			<span ng-show="vm.target.sortType == 'size' && vm.target.sortReverse" class="fa fa-caret-up"></span>
+				      			</a>
+							</th>
+				            <th class="text-center">
+				               	<a ng-click="vm.target.sortType = 'fileTime'; vm.target.sortReverse = !vm.target.sortReverse">Last modified 
+				        			<span ng-show="vm.target.sortType == 'fileTime' && !vm.target.sortReverse" class="fa fa-caret-down"></span>
+				        			<span ng-show="vm.target.sortType == 'fileTime' && vm.target.sortReverse" class="fa fa-caret-up"></span>
+				      			</a>
+							</th>
+						</tr>
+				        <tr ng-repeat="file in vm.target.files | orderBy:vm.target.sortType:vm.target.sortReverse">
+				            <td sortable="'filename'">
+				            		<a ng-click="vm.selectTargetDirectory(file)" ng-if="file.dir">{{ file.filename }}</a>
+				            		<span ng-if="!file.dir">{{ file.filename }}</span>
+				            </td>
+				            <td class="text-right" sortable="'size'"><span ng-if="!file.dir">{{ vm.toOctets(file.size) }}</span></td>
+				            <td class="text-center" sortable="'fileTime'">{{ file.fileTime | date:'yyyy-MM-dd HH:mm' }}</td>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+
+
+	        <div id="scheduling" class="tab-pane fade">
+				<div class="col-md-5"> 
+			        <div class="form-group">
+			            <label for="id"class="control-label">ID</label>
+			            <input id="id" name="id" class="form-control" ng-model="vm.dWTransfert.id" readonly/>
+			        </div>
+			        <div class="form-group">
+			            <label class="control-label" for="field_rank">Rank</label>
+			            <input type="number" class="form-control" maxlength="4" min="0" max="9999" name="rank" id="field_rank" ng-model="vm.dWTransfert.rank"  tabindex="4"/>
+			        </div>
+				</div>
+				<div class="col-md-5 col-md-offset-1"> 
+			        <div class="form-group">
+			            <label class="control-label" for="field_scheduling">Scheduling</label>
+			            <select class="form-control" name="scheduling" ng-model="vm.dWTransfert.scheduling" id="field_scheduling"  tabindex="5">
+			                <option value="IMMEDIATLY">Immediatly</option>
+			                <option value="EVERY_DAY_WINDOW">Daily time window</option>
+			            </select>
+			        </div>
+			        <div class="form-group">
+			            <label class="control-label" for="field_dayBegin">Day Begin</label>
+			            <input type="number" class="form-control" length="10" name="dayBegin" id="field_dayBegin" ng-model="vm.dWTransfert.dayBegin"  tabindex="6"/>
+			        </div>
+			        <div class="form-group">
+			            <label class="control-label" for="field_dayEnd">Day End</label>
+			            <input type="number" class="form-control" length="10" name="dayEnd" id="field_dayEnd" ng-model="vm.dWTransfert.dayEnd"  tabindex="7"/>
+			        </div>
+				</div>
+			</div>
+	        <div id="executionDetails" class="tab-pane fade">
+		        <div class="col-md-5">        
+			        <div class="form-group">
+			            <label class="control-label" for="field_status">Status</label>
+			            <select class="form-control" name="status" ng-model="vm.dWTransfert.status" id="field_status"  tabindex="8">
+			                <option value="CREATED">CREATED</option>
+			                <option value="DOING">DOING</option>
+			                <option value="DONE">DONE</option>
+			                <option value="ERROR">ERROR</option>
+			            </select>
+			        </div>
+			        <div class="form-group">
+			            <label class="control-label" for="field_nbError">NB error</label>
+			            <div class="input-group-btn">
+			                <input id="field_nbError" type="number" class="form-control" name="nbError" ng-model="vm.dWTransfert.nbError"  tabindex="9"/>
+			            </div>
+			        </div>
+			    </div>
+		        <div class="col-md-5 col-md-offset-1">
+		        	<div class="form-group">
+			            <label class="control-label" for="field_start">Started</label>
+			            <div class="input-group">
+			                <input id="field_start" type="text" class="form-control" name="start" datetime-picker="{{dateformat}}" ng-model="vm.dWTransfert.start" is-open="vm.datePickerOpenStatus.start" readonly/>
+		<!-- 		                <span class="input-group-btn"> -->
+		<!-- 		                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('start')"><i class="glyphicon glyphicon-calendar"></i></button> -->
+		<!-- 		                </span> -->
+			             </div>
+		            </div>
+			        <div class="form-group">
+			            <label class="control-label" for="field_end">Ended</label>
+			            <div class="input-group">
+			                <input id="field_end" type="text" class="form-control" name="end" datetime-picker="{{dateformat}}" ng-model="vm.dWTransfert.end" is-open="vm.datePickerOpenStatus.end" readonly/>
+		<!-- 		                <span class="input-group-btn"> -->
+		<!-- 		                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('end')"><i class="glyphicon glyphicon-calendar"></i></button> -->
+		<!-- 		                </span> -->
+			            </div>
+			        </div>
+		        </div>
+		        <div class="form-group col-md-12">
+		            <label class="control-label" for="field_nbError">Error Messages</label>
+		            <div class="input-group-btn">
+		                <textarea id="field_errorMessages" type="text" class="form-control" name="errorMessages" ng-model="vm.dWTransfert.errorMessages"></textarea>
+		            </div>
+		        </div>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary" ng-click="vm.save()">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity DWTransfert.
+    -->
+    <changeSet id="20160730085117-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="source_account"
+                                 baseTableName="dw_transfert"
+                                 constraintName="fk_dwtransfert_source_account"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dw_host_account"/>
+
+        <addForeignKeyConstraint baseColumnNames="target_account"
+                                 baseTableName="dw_transfert"
+                                 constraintName="fk_dwtransfert_target_account"
+                                 referencedColumnNames="id"
+                                 referencedTableName="dw_host_account"/>
+
+    </changeSet>
+</databaseChangeLog>

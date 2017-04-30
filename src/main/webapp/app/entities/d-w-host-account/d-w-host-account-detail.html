@@ -1,0 +1,63 @@
+
+<div>
+    <h2><span>DW Host Account</span> {{vm.dWHostAccount.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span>Protocol</span></dt>		<dd><span>{{vm.dWHostAccount.protocol}}</span></dd>
+        <dt><span>Host</span></dt>			<dd><span>{{vm.dWHostAccount.host}}</span></dd>
+        <dt><span>Port</span></dt>			<dd><span>{{vm.dWHostAccount.port}}</span></dd>
+        <dt><span>User Name</span></dt>		<dd><span>{{vm.dWHostAccount.userName}}</span></dd>
+        <dt><span>Password</span></dt>		<dd><span>{{vm.dWHostAccount.password}}</span></dd>
+        <dt><span>Separator</span></dt>		<dd><span>{{vm.dWHostAccount.pathSeparator}}</span></dd>
+        <dt><span>Default path</span></dt>		<dd><span>{{vm.dWHostAccount.defaultPath}}</span></dd>
+    </dl>
+    <div>
+	    <button type="submit" class="btn btn-info" ng-click="vm.manageConnection()">
+	        <span class="glyphicon glyphicon-link"></span>&nbsp;<span ng-if="!vm.connected"> Connect</span><span ng-if="vm.connected"> Disconnect</span>
+	    </button>
+	    <button type="submit" class="btn btn-info" ng-click="vm.onBrowse()">
+	        <span class="glyphicon glyphicon-search"></span>&nbsp;<span> Browse</span>
+	    </button>
+	    <input type="text" name="path" id="path" ng-model="vm.path" size="100"/>
+    </div>
+    <table class="jh-table table table-striped" ng-table="vm.files" show-filter="false"><tbody>
+		<tr>
+			<th class="text-center">
+               	<a ng-click="sortType = 'filename'; sortReverse = !sortReverse">Name 
+        			<span ng-show="sortType == 'filename' && !sortReverse" class="fa fa-caret-down"></span>
+        			<span ng-show="sortType == 'filename' && sortReverse" class="fa fa-caret-up"></span>
+      			</a>
+               </th>
+			<th class="text-center">
+               	<a ng-click="sortType = 'size'; sortReverse = !sortReverse">Size
+        			<span ng-show="sortType == 'size' && !sortReverse" class="fa fa-caret-down"></span>
+        			<span ng-show="sortType == 'size' && sortReverse" class="fa fa-caret-up"></span>
+      			</a>
+			</th>
+            <th class="text-center">
+               	<a ng-click="sortType = 'fileTime'; sortReverse = !sortReverse">Last modified 
+        			<span ng-show="sortType == 'fileTime' && !sortReverse" class="fa fa-caret-down"></span>
+        			<span ng-show="sortType == 'fileTime' && sortReverse" class="fa fa-caret-up"></span>
+      			</a>
+			</th>
+		</tr>
+        <tr ng-repeat="file in vm.files | orderBy:sortType:sortReverse">
+            <td sortable="'filename'">
+            		<a ng-click="vm.select(file)" ng-if="file.dir">{{ file.filename }}</a>
+            		<span ng-if="!file.dir">{{ file.filename }}</span>
+            </td>
+            <td class="text-right" sortable="'size'"><span ng-if="!file.dir">{{ vm.toOctets(file.size) }}</span></td>
+            <td class="text-right" sortable="'fileTime'">{{ vm.toDate(file.fileTime) }}</td>
+		</tr>
+	</tbody></table>
+	
+    <button type="submit" ui-sref="{{ vm.previousState }}" class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="d-w-host-account-detail.edit({id:vm.dWHostAccount.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm"> Edit</span>
+    </button>
+</div>

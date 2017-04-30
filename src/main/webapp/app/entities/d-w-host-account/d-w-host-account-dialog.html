@@ -1,0 +1,56 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myDWHostAccountLabel">Create or edit a DW Host Account</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.dWHostAccount.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id" ng-model="vm.dWHostAccount.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_protocol">Protocol</label>
+            <select class="form-control" name="protocol" ng-model="vm.dWHostAccount.protocol" id="field_protocol">
+                <option value="LOCAL_FILE_SYSTEM">Local file system</option>
+                <option value="SSH">SFTP</option>
+                <option value="FTP">FTP</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_host">Host</label>
+            <input type="text" class="form-control" name="host" id="field_host" ng-model="vm.dWHostAccount.host"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_port">Port</label>
+            <input type="number" class="form-control" name="port" id="field_port" ng-model="vm.dWHostAccount.port"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_userName">User Name</label>
+            <input type="text" class="form-control" name="userName" id="field_userName" ng-model="vm.dWHostAccount.userName"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_password">Password</label>
+            <input type="text" class="form-control" name="password" id="field_password" ng-model="vm.dWHostAccount.password"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_pathSeparator">Path separator</label>
+            <input type="text" class="form-control" name="pathSeparator" id="field_pathSeparator" ng-model="vm.dWHostAccount.pathSeparator" size="1/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_pathSeparator">Default path</label>
+            <input type="text" class="form-control" name="defaultPath" id="field_defaultPath" ng-model="vm.dWHostAccount.defaultPath" maxlength="255/>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>
