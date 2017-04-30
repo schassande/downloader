@@ -1,5 +1,7 @@
 # downloader
 
+This application is files downloader with scheduling. You can schedule file transfers from a source to a destination. Supported connexion are : SSH, SFTP, FTP, Local file system
+
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 ## Development
